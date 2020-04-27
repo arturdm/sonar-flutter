@@ -27,17 +27,25 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.nio.file.Files.isRegularFile;
+
 public class FlutterTestReportParser {
 
     List<FlutterUnitTestSuite> parse(File reportFile) throws IOException {
+        Path reportFilePath = Paths.get(reportFile.toURI());
+        if (!isRegularFile(reportFilePath)) {
+            return Collections.emptyList();
+        }
 
         StringBuilder contentBuilder = new StringBuilder();
-        Stream<String> stream = Files.lines(Path.of(reportFile.toURI()), StandardCharsets.UTF_8);
+        Stream<String> stream = Files.lines(reportFilePath, StandardCharsets.UTF_8);
         stream.forEach(s -> contentBuilder.append(s).append("\n"));
         return this.parse(contentBuilder.toString());
 

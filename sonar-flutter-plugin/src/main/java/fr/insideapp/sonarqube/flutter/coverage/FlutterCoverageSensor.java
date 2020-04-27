@@ -35,6 +35,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class FlutterCoverageSensor implements Sensor {
     private static final Logger LOGGER = LoggerFactory.getLogger(FlutterCoverageSensor.class);
@@ -64,7 +68,10 @@ public class FlutterCoverageSensor implements Sensor {
                 .orElse(DEFAULT_REPORT_PATH);
     }
 
-    private static void saveCoverageFromLcovFiles(SensorContext context, List<File> lcovFiles) {
+    private static void saveCoverageFromLcovFiles(SensorContext context, List<File> lcovFilesWithNulls) {
+        List<File> lcovFiles = lcovFilesWithNulls.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         LOGGER.info("Analysing {}", lcovFiles);
 
         FileSystem fileSystem = context.fileSystem();
