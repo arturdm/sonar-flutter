@@ -45,7 +45,7 @@ public class FlutterPlugin implements Plugin {
         context.addExtensions(Dart.class, DartSensor.class, DartProfile.class);
 
         // dartanalyzer Sensor
-        context.addExtensions(DartAnalyzerSensor.class, DartAnalyzerRulesDefinition.class);
+        context.addExtension(DartAnalyzerRulesDefinition.class);
 
         context.addExtension(
                 PropertyDefinition.builder(FLUTTER_TESTS_REPORT_PATH_KEY)
